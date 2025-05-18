@@ -1,0 +1,392 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Message Task with OTP Autofill</title>
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', sans-serif;
+      background-color: #1e140d;
+      color: white;
+    }
+
+    .top-bar {
+      background: #333;
+      padding: 10px;
+      font-size: 14px;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .path {
+      font-size: 10px;
+      color: gray;
+    }
+
+    .container {
+      padding: 16px;
+    }
+
+    h1 {
+      text-align: center;
+      margin-bottom: 20px;
+      font-size: 24px;
+    }
+
+    h2 {
+      font-size: 20px;
+      margin-bottom: 10px;
+    }
+
+    .stats-box {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      background-color: #3a281c;
+      padding: 15px;
+      border-radius: 12px;
+      margin-bottom: 20px;
+      text-align: center;
+      gap: 10px;
+    }
+
+    .stats-box > div {
+      flex: 1 1 30%;
+      min-width: 100px;
+    }
+
+    .stats-box small {
+      display: block;
+      color: #aaa;
+      font-size: 12px;
+    }
+
+    .whatsapp-box {
+      background-color: #2d1d13;
+      padding: 20px;
+      border-radius: 12px;
+      margin-bottom: 20px;
+    }
+
+    .phone-input {
+      display: flex;
+      margin-top: 10px;
+      flex-wrap: wrap;
+    }
+
+    .phone-input input {
+      flex: 1;
+      min-width: 60%;
+      padding: 10px;
+      border-radius: 8px 0 0 8px;
+      border: none;
+      outline: none;
+      background-color: #444;
+      color: white;
+    }
+
+    .phone-input button {
+      padding: 10px 15px;
+      background-color: orange;
+      border: none;
+      border-radius: 0 8px 8px 0;
+      color: white;
+      font-weight: bold;
+      cursor: pointer;
+      flex-shrink: 0;
+    }
+
+    .otp-box {
+      display: flex;
+      justify-content: space-between;
+      margin-top: 15px;
+      gap: 6px;
+    }
+
+    .otp-box input {
+      flex: 1;
+      min-width: 40px;
+      max-width: 50px;
+      height: 45px;
+      text-align: center;
+      font-size: 18px;
+      border-radius: 8px;
+      background-color: #444;
+      border: none;
+      color: white;
+    }
+
+    .note {
+      margin-top: 10px;
+      font-size: 12px;
+      color: #aaa;
+    }
+
+    .added-numbers {
+      background-color: #1a110a;
+      padding: 15px;
+      border-radius: 12px;
+      max-height: 300px;
+      overflow-y: auto;
+    }
+
+    .number-entry {
+      border-bottom: 1px solid #444;
+      padding: 10px 0;
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    .number-entry code {
+      background-color: #333;
+      padding: 2px 6px;
+      border-radius: 4px;
+      font-weight: bold;
+      letter-spacing: 1.5px;
+    }
+
+    .delete-btn {
+      background-color: #e04e4e;
+      border: none;
+      color: white;
+      padding: 6px 10px;
+      border-radius: 6px;
+      cursor: pointer;
+      font-weight: bold;
+      font-size: 12px;
+      user-select: none;
+    }
+
+    .delete-btn:hover {
+      background-color: #b93636;
+    }
+
+    @media (max-width: 600px) {
+      h1 {
+        font-size: 20px;
+      }
+
+      .phone-input input {
+        border-radius: 8px 8px 0 0;
+        margin-bottom: 6px;
+        min-width: 100%;
+      }
+
+      .phone-input button {
+        border-radius: 0 0 8px 8px;
+        min-width: 100%;
+      }
+
+      .otp-box {
+        flex-wrap: wrap;
+        justify-content: center;
+      }
+
+      .otp-box input {
+        margin: 3px 2px;
+      }
+
+      .stats-box {
+        flex-direction: column;
+        align-items: center;
+      }
+
+      .stats-box > div {
+        width: 100%;
+      }
+
+      .number-entry {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="top-bar">
+    <span>Preview</span>
+    <span class="path">/storage/emulated/0/APP MAKING COURSE/index.html</span>
+  </div>
+
+  <div class="container">
+    <h1>Message Task</h1>
+
+    <div class="stats-box">
+      <div id="idleTime">0d0h0m<br><small>Total Idle Time</small></div>
+      <div id="todayPoints">0<br><small>Today Points</small></div>
+      <div id="yesterdayPoints">0<br><small>Yesterday Points</small></div>
+    </div>
+
+    <div class="whatsapp-box">
+      <h2>Scan to add WhatsApp</h2>
+      <p>Enter the verification code into the linked WhatsApp account</p>
+
+      <div class="phone-input">
+        <input type="text" id="phoneInput" placeholder="+91 Enter your phone number" />
+        <button id="getCodeBtn">Get Code</button>
+      </div>
+
+      <div class="otp-box">
+        <input type="text" maxlength="1" />
+        <input type="text" maxlength="1" />
+        <input type="text" maxlength="1" />
+        <input type="text" maxlength="1" />
+        <input type="text" maxlength="1" />
+        <input type="text" maxlength="1" />
+      </div>
+
+      <p class="note">This window will be closed after successfully entering the verification code in WhatsApp.</p>
+    </div>
+
+    <div class="added-numbers">
+      <h2>Added Numbers</h2>
+      <div id="addedNumbersDiv"></div>
+    </div>
+  </div>
+
+  <script>
+    const phoneInput = document.getElementById('phoneInput');
+    const getCodeBtn = document.getElementById('getCodeBtn');
+    const addedNumbersDiv = document.getElementById('addedNumbersDiv');
+    const idleTimeEl = document.getElementById('idleTime');
+    const todayPointsEl = document.getElementById('todayPoints');
+    const yesterdayPointsEl = document.getElementById('yesterdayPoints');
+
+    let addedNumbers = JSON.parse(localStorage.getItem('addedNumbers')) || [];
+
+    function generatePopPopCode(length = 6) {
+      const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+      let code = '';
+      for (let i = 0; i < length; i++) {
+        code += chars.charAt(Math.floor(Math.random() * chars.length));
+      }
+      return code;
+    }
+
+    function formatTimeDiff(ms) {
+      const totalMinutes = Math.floor(ms / (1000 * 60));
+      const days = Math.floor(totalMinutes / (60 * 24));
+      const hours = Math.floor((totalMinutes % (60 * 24)) / 60);
+      const minutes = totalMinutes % 60;
+      return `${days}d${hours}h${minutes}m`;
+    }
+
+    function calculateCoins(addedDate) {
+      const now = new Date();
+      let coins = 0;
+      const diffMs = now - addedDate;
+      const diffMinutes = diffMs / (1000 * 60);
+      let current = new Date(addedDate);
+      while (current < now) {
+        const hour = current.getHours();
+        if (hour >= 16 && hour < 20) {
+          coins += (30 / 60);
+        } else {
+          coins += (20 / 60);
+        }
+        current.setMinutes(current.getMinutes() + 1);
+      }
+      return Math.floor(coins);
+    }
+
+    function coinsToRupees(coins) {
+      return (coins / 5).toFixed(2);
+    }
+
+    function renderAddedNumbers() {
+      addedNumbersDiv.innerHTML = '';
+      let totalIdleMs = 0;
+      let todayPoints = 0;
+      let yesterdayPoints = 0;
+      const now = new Date();
+
+      addedNumbers.forEach((entry, index) => {
+        const addedDate = new Date(entry.addedAt);
+        const timeDiffMs = now - addedDate;
+        totalIdleMs += timeDiffMs;
+
+        const coins = calculateCoins(addedDate);
+        todayPoints += coins;
+
+        const yesterday = new Date(now);
+        yesterday.setDate(yesterday.getDate() - 1);
+        if (
+          addedDate.getDate() === yesterday.getDate() &&
+          addedDate.getMonth() === yesterday.getMonth() &&
+          addedDate.getFullYear() === yesterday.getFullYear()
+        ) {
+          yesterdayPoints += coins;
+        }
+
+        const timeDiffText = formatTimeDiff(timeDiffMs);
+
+        const div = document.createElement('div');
+        div.classList.add('number-entry');
+        div.innerHTML = `
+          <div>
+            <strong>${entry.number}</strong><br>
+            Pop Pop Code: <code>${entry.code}</code><br>
+            Added: ${addedDate.toLocaleString()}<br>
+            Active for: ${timeDiffText}<br>
+            Coins earned: ${coins} (₹${coinsToRupees(coins)})
+          </div>
+          <button class="delete-btn" data-index="${index}">Delete</button>
+        `;
+        addedNumbersDiv.appendChild(div);
+      });
+
+      idleTimeEl.innerHTML = `${formatTimeDiff(totalIdleMs)}<br><small>Total Idle Time</small>`;
+      todayPointsEl.innerHTML = `${todayPoints}<br><small>Today Points</small>`;
+      yesterdayPointsEl.innerHTML = `${yesterdayPoints}<br><small>Yesterday Points</small>`;
+
+      document.querySelectorAll('.delete-btn').forEach(btn => {
+        btn.addEventListener('click', (e) => {
+          const idx = parseInt(e.target.getAttribute('data-index'));
+          if (!isNaN(idx)) {
+            addedNumbers.splice(idx, 1);
+            localStorage.setItem('addedNumbers', JSON.stringify(addedNumbers));
+            renderAddedNumbers();
+          }
+        });
+      });
+    }
+
+    getCodeBtn.addEventListener('click', () => {
+      const number = phoneInput.value.trim();
+      if (number === '') {
+        alert('Please enter a phone number');
+        return;
+      }
+
+      const popPopCode = generatePopPopCode();
+
+      addedNumbers.push({ number, addedAt: new Date().toISOString(), code: popPopCode });
+      localStorage.setItem('addedNumbers', JSON.stringify(addedNumbers));
+
+      phoneInput.value = '';
+      renderAddedNumbers();
+
+      const otpInputs = document.querySelectorAll('.otp-box input');
+      for (let i = 0; i < otpInputs.length; i++) {
+        otpInputs[i].value = popPopCode[i] || '';
+      }
+    });
+
+    renderAddedNumbers();
+
+    setInterval(() => {
+      renderAddedNumbers();
+      localStorage.setItem('addedNumbers', JSON.stringify(addedNumbers));
+    }, 60000);
+  </script>
+</body>
+</html>

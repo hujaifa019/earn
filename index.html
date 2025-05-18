@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en" >
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+  <title>Login - Username Only</title>
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+    body, html {
+      margin: 0; padding: 0;
+      height: 100%;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: linear-gradient(135deg, #667eea, #764ba2);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      color: #fff;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+    .login-container {
+      background: rgba(255, 255, 255, 0.15);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      padding: 40px 30px;
+      border-radius: 20px;
+      box-shadow: 0 8px 32px rgba(31, 38, 135, 0.37);
+      width: 90vw;
+      max-width: 360px;
+      text-align: center;
+      color: #fff;
+    }
+    .logo {
+      width: 72px;
+      height: 72px;
+      margin: 0 auto 20px;
+      user-select: none;
+    }
+    h2 {
+      margin-bottom: 6px;
+      font-weight: 700;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      user-select: none;
+      font-size: 1.8rem;
+    }
+    .subtitle {
+      font-size: 14px;
+      color: #dcdcdccc;
+      margin-bottom: 24px;
+      font-style: italic;
+      user-select: none;
+    }
+    input[type="text"] {
+      width: 100%;
+      padding: 14px 18px;
+      border-radius: 12px;
+      border: none;
+      font-size: 16px;
+      outline: none;
+      transition: box-shadow 0.3s ease;
+      background: rgba(255, 255, 255, 0.25);
+      color: #fff;
+      box-shadow: inset 0 0 5px rgba(255,255,255,0.3);
+      user-select: text;
+    }
+    input[type="text"]::placeholder {
+      color: #e0e0e0;
+      font-style: italic;
+    }
+    input[type="text"]:focus {
+      box-shadow: 0 0 8px 2px #b0a8f7;
+      background: rgba(255, 255, 255, 0.35);
+    }
+    button {
+      margin-top: 28px;
+      width: 100%;
+      padding: 14px 0;
+      background: #5a44d2;
+      border: none;
+      border-radius: 16px;
+      color: white;
+      font-weight: 700;
+      font-size: 18px;
+      cursor: pointer;
+      box-shadow: 0 8px 15px rgba(90, 68, 210, 0.3);
+      transition: background-color 0.3s ease, box-shadow 0.3s ease;
+      user-select: none;
+      -webkit-tap-highlight-color: transparent;
+    }
+    button:hover {
+      background: #4835a8;
+      box-shadow: 0 12px 20px rgba(72, 53, 168, 0.5);
+    }
+    .message {
+      margin-top: 18px;
+      min-height: 22px;
+      font-weight: 600;
+      user-select: none;
+      font-size: 15px;
+    }
+    .message.error {
+      color: #ff6b6b;
+    }
+    .message.success {
+      color: #9fff9f;
+    }
+  </style>
+</head>
+<body>
+  <div class="login-container">
+    <!-- Logo -->
+    <img src="https://cdn-icons-png.flaticon.com/512/732/732200.png" alt="Logo" class="logo" />
+    
+    <h2>Login</h2>
+    <div class="subtitle">Per hours WhatsApp 98 rupees</div>
+
+    <input type="text" id="username" placeholder="Enter your username" autocomplete="off" />
+    <button onclick="login()">Log In</button>
+    <div class="message" id="message"></div>
+  </div>
+
+  <script>
+    function login() {
+      const username = document.getElementById("username").value.trim();
+      const message = document.getElementById("message");
+
+      if (username === "") {
+        message.textContent = "Please enter your username.";
+        message.className = "message error";
+      } else if (username.toUpperCase() !== "SAMSI") {
+        message.textContent = "Invalid username. Only 'SAMSI' allowed.";
+        message.className = "message error";
+      } else {
+        message.textContent = `Welcome, ADMIN! Redirecting...`;
+        message.className = "message success";
+
+        setTimeout(() => {
+          window.location.href = "index2.html";
+        }, 1500);
+      }
+    }
+  </script>
+</body>
+</html>
